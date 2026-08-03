@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    namespace: ziad
+    name: backend-deployment
+    labels:
+      app: backend
+spec:
+    replicas: {{ .Values.backend.replicas }}
+    selector:
+      matchLabels:
+        app: backend
+    template:
+      metadata:
+        labels:
+          app: backend
+      spec:
+        imagePullSecrets:
+          - name: {{ .Values.backend.imagePullSecrets }}
+        containers:
+          - name: backend-container
+            image: "{{ .Values.backend.image }}:{{ .Values.backend.image.tag }}"
+            ports:
+            - containerPort: 8080
+            env:
+              - name: MONGODB_URI
+                value: mongodb://praxis-form-mongodb.praxis.svc.cluster.local:27017/ziad-praxis
+              - name: ADMIN_DEFAULT_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: backend-secret
+                    key: ADMIN_DEFAULT_PASSWORD
+
+              - name: JWT_SECRET
+                valueFrom:
+                  secretKeyRef:
+                    name: backend-secret
+                    key: JWT_SECRET
+
+              - name: JWT_EXP_MINUTES
+                valueFrom:
+                  secretKeyRef:
+                    name: backend-secret
+                    key: JWT_EXP_MINUTES

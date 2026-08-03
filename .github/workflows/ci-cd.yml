@@ -196,7 +196,9 @@ jobs:
         run: |
           mkdir -p $HOME/.kube 
           echo "${{ secrets.myKubeconfig }}" | base64 -d > $HOME/.kube/config 
-          chmod 600 $HOME/.kube/config      
+          chmod 600 $HOME/.kube/config     
+      - name: Set lowercase repo name
+        run: echo "REPO_LC=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV 
       - name: deploy with helm
         working-directory: ./z-chart
         run: |

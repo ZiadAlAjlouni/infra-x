@@ -1,8 +1,10 @@
 backend:
   replicas: 3
   imagePullSecrets: image-pull-secret
-  image: ghcr.io/ziadalajlouni/backend
+  repository:
+    image: ghcr.io/ziadalajlouni/backend
     tag: "v1"
 frontend:
-  image: ghcr.io/ziadalajlouni/infra-x/frontend
+  repository:
+    image: ghcr.io/ziadalajlouni/infra-x/frontend
     tag: "latest"
